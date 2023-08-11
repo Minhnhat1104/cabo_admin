@@ -3,8 +3,8 @@ Open terminal at root folder and run following command
 2. npm start
 
 Account:
-username: admin
-password: 123456
+1. username: admin
+2. password: 123456
 
 
 ==== Ignore below section ====
