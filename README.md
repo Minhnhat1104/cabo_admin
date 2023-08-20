@@ -2,6 +2,9 @@ Open terminal at root folder and run following command
 1. npm i
 2. npm start
 
+Account:
+1. username: admin
+2. password: 123456
 
 
 ==== Ignore below section ====
