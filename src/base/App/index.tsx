@@ -10,6 +10,7 @@ import { theme } from "../theme";
 
 import SignInPage from "../../Auth/pages/SignIn";
 import Home from "@home/page/index";
+import { Toaster } from "react-hot-toast";
 
 export const UserContext = createContext<UserContextValue>({
   user: null,
@@ -82,6 +83,7 @@ function App() {
             }}
           >
             {routes}
+            <Toaster />
           </Box>
           {/* <Footer /> */}
         </Box>

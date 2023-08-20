@@ -24,6 +24,7 @@ import { VEHICLE_TYPE_OPTIONS } from "@home/config/constants";
 import SelectBox from "@home/components/SelectBox";
 import LocationAutocomplete from "@home/components/LocationAutocomplete";
 import useFormSubmit from "@home/hooks/useFormSubmit";
+import { useSnackBar } from "@base/hooks/useSnackBar";
 
 interface FormProps {
   refetch?: () => void;
@@ -32,6 +33,7 @@ interface FormProps {
 const Form = (props: FormProps) => {
   //   const { open, onClose, refetch } = props;
   const theme = useTheme();
+  const { enqueueSuccess } = useSnackBar();
   const [searchLocations, setSearchLocations] = useState<string[]>(
     dummyDataRecentLocation
   );
