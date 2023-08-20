@@ -31,6 +31,8 @@ const SelectBox = (props: SelectBoxProps, ref: any) => {
       target: { value },
     } = event;
     setSelectedValue(value);
+
+    onChange && onChange(value);
   };
 
   return (

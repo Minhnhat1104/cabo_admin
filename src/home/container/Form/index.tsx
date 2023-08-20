@@ -22,6 +22,8 @@ import { SET_TIMEOUT } from "../../../base/constants";
 import { dummyDataRecentLocation } from "./dummyData";
 import { VEHICLE_TYPE_OPTIONS } from "@home/config/constants";
 import SelectBox from "@home/components/SelectBox";
+import LocationAutocomplete from "@home/components/LocationAutocomplete";
+import useFormSubmit from "@home/hooks/useFormSubmit";
 
 interface FormProps {
   refetch?: () => void;
@@ -34,43 +36,59 @@ const Form = (props: FormProps) => {
     dummyDataRecentLocation
   );
   // ============ handle update modal ================
+  const mSubmit = useFormSubmit();
+
   const defaultValues = {
     //   _id: 0,
-    customerOrderLocation: "",
-    destination: "",
+    customerOrderLocation: null,
+    destination: null,
     customerPhoneNumber: "",
     carType: "",
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset,
-    watch,
-  } = useForm({
-    defaultValues,
-  });
-
-  //   const { mAdd } = useCourseMutation();
-  const mAdd = () => {};
-
-  const onSubmit = (data: any) => {
-    console.log("🚀 Submit data:", data);
-    // mAdd.mutate(data, {
-    //   onSuccess: () => {
-    //     setTimeout(() => {
-    //       //   refetch && refetch();
-    //     }, SET_TIMEOUT);
-    //   },
-    // });
-
-    // onClose && onClose();
-  };
+  const [formValue, setFormValue] = useState<any>(defaultValues);
 
   const handleReset = () => {
-    reset();
+    setFormValue(defaultValues);
+  };
+
+  const register = (
+    name:
+      | "customerOrderLocation"
+      | "destination"
+      | "customerPhoneNumber"
+      | "carType"
+  ) => {
+    return {
+      value: formValue?.[name],
+      onChange: (nVal: any) => setFormValue({ ...formValue, [name]: nVal }),
+    };
+  };
+
+  const handleSubmit = () => {
+    console.log("Form value: ", formValue);
+    const { customerOrderLocation, destination, customerPhoneNumber, carType } =
+      formValue;
+    const params = {
+      customerOrderLocation: {
+        latitude: customerOrderLocation?.location?.latitude,
+        longitude: customerOrderLocation?.location?.longitude,
+      },
+      toLocation: {
+        latitude: destination?.location?.latitude,
+        longitude: destination?.location?.longitude,
+      },
+      customerPhoneNumber: customerPhoneNumber,
+      distance: 10,
+      cost: 20000,
+      carType: carType,
+      paymentType: 1,
+    };
+    mSubmit.mutate(params, {
+      onSuccess(data, variables, context) {
+        handleReset();
+      },
+    });
   };
 
   const mainFields = () => {
@@ -78,41 +96,31 @@ const Form = (props: FormProps) => {
       <Stack spacing={1}>
         <Box>
           <Typography variant="subtitle2">Customer order location</Typography>
-          <TextField
-            size="small"
-            {...register("customerOrderLocation", { required: true })}
-            variant="outlined"
-            fullWidth
-            multiline
-            // rows={3}
-          />
+          <LocationAutocomplete {...register("customerOrderLocation")} />
         </Box>
         <Box>
           <Typography variant="subtitle2">Destination</Typography>
-          <TextField
-            size="small"
-            {...register("destination", { required: true })}
-            variant="outlined"
-            fullWidth
-            multiline
-            // rows={3}
-          />
+          <LocationAutocomplete {...register("destination")} />
         </Box>
         <Box>
           <Typography variant="subtitle2">Customer phone number</Typography>
           <TextField
             size="small"
-            {...register("customerPhoneNumber", { required: true })}
+            {...{
+              ...register("customerPhoneNumber"),
+              onChange: (e: any) =>
+                setFormValue({
+                  ...formValue,
+                  customerPhoneNumber: e.target.value,
+                }),
+            }}
             variant="outlined"
             fullWidth
           />
         </Box>
         <Box>
           <Typography variant="subtitle2">Car type</Typography>
-          <SelectBox
-            {...register("carType", { required: true })}
-            options={VEHICLE_TYPE_OPTIONS}
-          />
+          <SelectBox {...register("carType")} options={VEHICLE_TYPE_OPTIONS} />
         </Box>
       </Stack>
     );
@@ -132,9 +140,7 @@ const Form = (props: FormProps) => {
           <Button
             variant="contained"
             color="primary"
-            // onClick={() => handleSubmit(onSubmit)}
-            onClick={() => handleSubmit((data: any) => onSubmit(data))()}
-            // handleSubmit((data) => onSubmit(data), onError)();
+            onClick={() => handleSubmit()}
           >
             Submit
           </Button>
@@ -148,17 +154,18 @@ const Form = (props: FormProps) => {
   return (
     <Box>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={12} lg={3}></Grid>
+        <Grid item xs={12} lg={6}>
           {mainFields()}
           {updateFooter()}
         </Grid>
-        <Grid item xs={6} p={2}>
+        {/* <Grid item xs={6} p={2}>
           <Box border={border} p={2} borderRadius={2}>
             {searchLocations.map((_location: string) => (
               <Typography key={_location}>{_location}</Typography>
             ))}
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );
