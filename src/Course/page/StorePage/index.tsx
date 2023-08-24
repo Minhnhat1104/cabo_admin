@@ -20,7 +20,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 import UpdateModal from "../../container/UpdateModal";
 import AddModal from "../../container/AddModal";
-import { SET_TIMEOUT } from "../../../base/constants";
+import { SET_TIMEOUT } from "../../../base/config/constants";
 
 const StorePage = () => {
   const [items, setItems] = useState<any>([]);

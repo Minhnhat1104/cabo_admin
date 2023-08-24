@@ -18,7 +18,7 @@ import { useForm } from "react-hook-form";
 // import useCourseMutation from "../../hooks/useCourseMutation";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
-import { SET_TIMEOUT } from "../../../base/constants";
+import { SET_TIMEOUT } from "../../../base/config/constants";
 import { dummyDataRecentLocation } from "./dummyData";
 import { VEHICLE_TYPE_OPTIONS } from "@home/config/constants";
 import SelectBox from "@home/components/SelectBox";

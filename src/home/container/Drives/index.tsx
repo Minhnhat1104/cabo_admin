@@ -16,7 +16,7 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
 // import UpdateModal from "../../container/UpdateModal";
 // import AddModal from "../../container/AddModal";
-import { SET_TIMEOUT } from "../../../base/constants";
+import { SET_TIMEOUT } from "../../../base/config/constants";
 import { dummyData } from "./dummyData";
 import Filter from "./Filter";
 import { DRIVER_STATUS_OPTIONS } from "@home/config/constants";

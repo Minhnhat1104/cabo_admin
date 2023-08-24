@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import useUserMutation from "../../hooks/useUserMutation";
-import { SET_TIMEOUT } from "../../../base/constants";
+import { SET_TIMEOUT } from "../../../base/config/constants";
 
 interface AddModalProps {
   open: boolean;

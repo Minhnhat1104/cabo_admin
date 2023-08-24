@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import useCourseMutation from "../../hooks/useCourseMutation";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import RefreshOutlinedIcon from "@mui/icons-material/RefreshOutlined";
-import { SET_TIMEOUT } from "../../../base/constants";
+import { SET_TIMEOUT } from "../../../base/config/constants";
 
 interface AddModalProps {
   open: boolean;
