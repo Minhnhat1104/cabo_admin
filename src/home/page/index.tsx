@@ -1,9 +1,18 @@
+import {
+  messaging,
+  onMessageListener,
+  requestPermission,
+} from "@base/components/firebase";
+import { KEY_LOCAL_STORAGE_FCM_TOKEN } from "@base/config/constants";
+import { useSnackBar } from "@base/hooks/useSnackBar";
 import Drives from "@home/container/Drives";
 import Form from "@home/container/Form";
+import useFcmTokenMutation from "@home/hooks/useFcmTokenMutation";
 import { DirectionsCarFilledOutlined, FeedOutlined } from "@mui/icons-material";
 import { Box, Stack, Tab, Tabs, Typography, useTheme } from "@mui/material";
+import { MessagePayload, onMessage } from "firebase/messaging";
 import _ from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,6 +53,29 @@ function a11yProps(index: number) {
 const ListPage = () => {
   const theme = useTheme();
   const [value, setValue] = React.useState(0);
+  const { enqueueSuccess } = useSnackBar();
+
+  const mFcmTokenMutate = useFcmTokenMutation();
+  // get Token firebase
+  useEffect(() => {
+    const getFCMtoken = async () => {
+      const fcmToken = await requestPermission();
+      const params = {
+        token: fcmToken,
+      };
+      mFcmTokenMutate.mutate(params);
+    };
+
+    getFCMtoken();
+
+    const unsubscribe = onMessageListener().then((payload) => {
+      console.log("payload: ", payload);
+    });
+
+    return () => {
+      unsubscribe.catch((err: any) => console.log("err: ", err));
+    };
+  }, []);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);

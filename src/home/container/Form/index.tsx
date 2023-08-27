@@ -5,6 +5,7 @@ import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import {
   Box,
   Button,
+  CircularProgress,
   Grid,
   IconButton,
   Stack,
@@ -25,6 +26,7 @@ import SelectBox from "@home/components/SelectBox";
 import LocationAutocomplete from "@home/components/LocationAutocomplete";
 import useFormSubmit from "@home/hooks/useFormSubmit";
 import { useSnackBar } from "@base/hooks/useSnackBar";
+import useCostDistance from "@home/hooks/useCostDistance";
 
 interface FormProps {
   refetch?: () => void;
@@ -34,9 +36,6 @@ const Form = (props: FormProps) => {
   //   const { open, onClose, refetch } = props;
   const theme = useTheme();
   const { enqueueSuccess } = useSnackBar();
-  const [searchLocations, setSearchLocations] = useState<string[]>(
-    dummyDataRecentLocation
-  );
   // ============ handle update modal ================
   const mSubmit = useFormSubmit();
 
@@ -46,9 +45,37 @@ const Form = (props: FormProps) => {
     destination: null,
     customerPhoneNumber: "",
     carType: "",
+    distance: "",
+    cost: "",
   };
 
   const [formValue, setFormValue] = useState<any>(defaultValues);
+
+  const params = {
+    fromLocation: {
+      latitude: formValue?.customerOrderLocation?.location?.latitude,
+      longitude: formValue?.customerOrderLocation?.location?.longitude,
+    },
+    toLocation: {
+      latitude: formValue?.destination?.location?.latitude,
+      longitude: formValue?.destination?.location?.longitude,
+    },
+    vehicleType: formValue?.carType,
+  };
+  const { data, isLoading, isFetching } = useCostDistance(params, {
+    enabled:
+      !!params?.fromLocation && !!params?.toLocation && !!params?.vehicleType,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setFormValue({ ...formValue, ...data });
+    } else {
+      setFormValue({ ...formValue, distance: "", cost: "" });
+    }
+  }, [data]);
+
+  const loading = isFetching;
 
   const handleReset = () => {
     setFormValue(defaultValues);
@@ -69,8 +96,14 @@ const Form = (props: FormProps) => {
 
   const handleSubmit = () => {
     console.log("Form value: ", formValue);
-    const { customerOrderLocation, destination, customerPhoneNumber, carType } =
-      formValue;
+    const {
+      customerOrderLocation,
+      destination,
+      customerPhoneNumber,
+      carType,
+      distance,
+      cost,
+    } = formValue;
     const params = {
       customerOrderLocation: {
         latitude: customerOrderLocation?.location?.latitude,
@@ -80,10 +113,10 @@ const Form = (props: FormProps) => {
         latitude: destination?.location?.latitude,
         longitude: destination?.location?.longitude,
       },
-      customerPhoneNumber: customerPhoneNumber,
-      distance: 10,
-      cost: 20000,
-      carType: carType,
+      customerPhoneNumber,
+      distance,
+      cost,
+      carType,
       paymentType: 1,
     };
     mSubmit.mutate(params, {
@@ -124,6 +157,30 @@ const Form = (props: FormProps) => {
           <Typography variant="subtitle2">Car type</Typography>
           <SelectBox {...register("carType")} options={VEHICLE_TYPE_OPTIONS} />
         </Box>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="subtitle2">Cost: </Typography>
+          {loading ? (
+            <CircularProgress style={{ width: 20, height: 20 }} />
+          ) : (
+            <Typography>{formValue?.cost}</Typography>
+          )}
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography variant="subtitle2">Distance: </Typography>
+          {loading ? (
+            <CircularProgress style={{ width: 20, height: 20 }} />
+          ) : (
+            <Typography>{formValue?.distance}</Typography>
+          )}
+        </Stack>
       </Stack>
     );
   };

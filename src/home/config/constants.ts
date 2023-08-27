@@ -1,49 +1,61 @@
 import { LabelValue } from "@base/types";
 
-export const VEHICLE_TYPE_CAR_4_SLOT = "VEHICLE_TYPE_CAR_4_SLOT";
-export const VEHICLE_TYPE_CAR_7_SLOT = "VEHICLE_TYPE_CAR_7_SLOT";
+export const VEHICLE_TYPE_CAR_4 = "VEHICLE_TYPE_CAR_4";
+export const VEHICLE_TYPE_CAR_7 = "VEHICLE_TYPE_CAR_7";
 export const VEHICLE_TYPE_MOTORBIKE = "VEHICLE_TYPE_MOTORBIKE";
 
 export const VEHICLE_TYPE_OPTIONS: LabelValue[] = [
   {
     label: "Car with 4 slots",
-    value: VEHICLE_TYPE_CAR_4_SLOT,
+    value: VEHICLE_TYPE_CAR_4,
   },
   {
     label: "Car with 7 slots",
-    value: VEHICLE_TYPE_CAR_7_SLOT,
+    value: VEHICLE_TYPE_CAR_7,
   },
-  {
-    label: "Motorbike",
-    value: VEHICLE_TYPE_MOTORBIKE,
-  },
+  // {
+  //   label: "Motorbike",
+  //   value: VEHICLE_TYPE_MOTORBIKE,
+  // },
 ];
 
-export const DRIVER_STATUS_SEARCHING = "DRIVER_STATUS_SEARCHING";
-export const DRIVER_STATUS_PICKING = "DRIVER_STATUS_PICKING";
-export const DRIVER_STATUS_IN_PROGRESS = "DRIVER_STATUS_IN_PROGRESS";
-export const DRIVER_STATUS_DONE = "DRIVER_STATUS_DONE";
+export const TRIP_STATUS_SEARCHING = "TRIP_STATUS_SEARCHING";
+export const TRIP_STATUS_PICKING = "TRIP_STATUS_PICKING";
+export const TRIP_STATUS_INPROGRESS = "TRIP_STATUS_INPROGRESS";
+export const TRIP_STATUS_DONE = "TRIP_STATUS_DONE";
+export const TRIP_STATUS_NO_DRIVER = "TRIP_STATUS_NO_DRIVER";
+export const TRIP_STATUS_CUSTOMER_CANCEL = "TRIP_STATUS_CUSTOMER_CANCEL";
 
 export const DRIVER_STATUS_OPTIONS: LabelValue[] = [
   {
     label: "Searching",
-    value: DRIVER_STATUS_SEARCHING,
+    value: TRIP_STATUS_SEARCHING,
     extra: "error",
   },
   {
     label: "Picking",
-    value: DRIVER_STATUS_PICKING,
+    value: TRIP_STATUS_PICKING,
     extra: "info",
   },
   {
     label: "In-progress",
-    value: DRIVER_STATUS_IN_PROGRESS,
-    extra: "warning",
+    value: TRIP_STATUS_INPROGRESS,
+    extra: "primary",
   },
   {
     label: "Done",
-    value: DRIVER_STATUS_DONE,
+    value: TRIP_STATUS_DONE,
     extra: "success",
+  },
+  {
+    label: "No driver",
+    value: TRIP_STATUS_NO_DRIVER,
+    extra: "warning",
+  },
+  {
+    label: "Cancel",
+    value: TRIP_STATUS_CUSTOMER_CANCEL,
+    extra: "secondary",
   },
 ];
 

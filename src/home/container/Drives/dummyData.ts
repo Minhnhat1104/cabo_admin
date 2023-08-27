@@ -1,9 +1,11 @@
 import { generateUUID } from "@base/utils";
 import {
-  DRIVER_STATUS_DONE,
-  DRIVER_STATUS_IN_PROGRESS,
-  DRIVER_STATUS_PICKING,
-  DRIVER_STATUS_SEARCHING,
+  TRIP_STATUS_SEARCHING,
+  TRIP_STATUS_PICKING,
+  TRIP_STATUS_INPROGRESS,
+  TRIP_STATUS_DONE,
+  TRIP_STATUS_NO_DRIVER,
+  TRIP_STATUS_CUSTOMER_CANCEL,
 } from "@home/config/constants";
 
 export interface Drive {
@@ -22,7 +24,7 @@ export const dummyData: Drive[] = [
     to: "227 Nguyen Van Cu street, district 5",
     customer: "Nguyen Thien Phu",
     driver: "Le Minh Nhat",
-    status: DRIVER_STATUS_SEARCHING,
+    status: TRIP_STATUS_SEARCHING,
   },
   {
     id: generateUUID(),
@@ -30,7 +32,7 @@ export const dummyData: Drive[] = [
     to: "227 Nguyen Van Cu street, district 5",
     customer: "Nguyen Thien Phu",
     driver: "Le Minh Nhat",
-    status: DRIVER_STATUS_PICKING,
+    status: TRIP_STATUS_PICKING,
   },
   {
     id: generateUUID(),
@@ -38,7 +40,7 @@ export const dummyData: Drive[] = [
     to: "227 Nguyen Van Cu street, district 5",
     customer: "Nguyen Thien Phu",
     driver: "Le Minh Nhat",
-    status: DRIVER_STATUS_IN_PROGRESS,
+    status: TRIP_STATUS_INPROGRESS,
   },
   {
     id: generateUUID(),
@@ -46,6 +48,6 @@ export const dummyData: Drive[] = [
     to: "227 Nguyen Van Cu street, district 5",
     customer: "Nguyen Thien Phu",
     driver: "Le Minh Nhat",
-    status: DRIVER_STATUS_DONE,
+    status: TRIP_STATUS_DONE,
   },
 ];

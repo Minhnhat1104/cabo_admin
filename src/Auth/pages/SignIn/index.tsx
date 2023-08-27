@@ -13,12 +13,22 @@ import { useNavigate } from "react-router-dom";
 import useSignIn from "../../hooks/useSignIn";
 import { UserContext } from "../../../base/App";
 import LogoImg from "@base/assets/CarLogo.svg";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import {
+  KEY_LOCAL_STORAGE_ACCESS_TOKEN,
+  KEY_LOCAL_STORAGE_REFRESH_TOKEN,
+  KEY_LOCAL_STORAGE_UID,
+} from "@base/config/constants";
+import { auth } from "@base/components/firebase";
+import { useSnackBar } from "@base/hooks/useSnackBar";
 
 const SignIn = () => {
   const { user, setUser } = useContext(UserContext);
   const [getUser, setGetUser] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const theme = useTheme();
+  const { enqueueSuccess } = useSnackBar();
   const navigate = useNavigate();
   const {
     register,
@@ -27,21 +37,43 @@ const SignIn = () => {
     setValue,
   } = useForm({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
 
   const onSubmit = (data: any) => {
     console.log("On submit: ", data);
-    const { username, password } = data;
-    if (username === "admin" && password === "123456") {
-      navigate("/Home", {
-        replace: true,
+    const { email, password } = data;
+    // sign in by firebase here
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(async (userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("🚀 ~ file: index.tsx:54 ~ user:", user);
+
+        enqueueSuccess("Login successfully!");
+
+        localStorage.setItem(KEY_LOCAL_STORAGE_UID, user?.uid);
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_ACCESS_TOKEN,
+          await user.getIdToken()
+        );
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_REFRESH_TOKEN,
+          user.refreshToken
+        );
+
+        navigate("/Home", {
+          replace: true,
+        });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorMessage);
       });
-    } else {
-      setError("Wrong credential");
-    }
   };
 
   return (
@@ -71,11 +103,11 @@ const SignIn = () => {
         />
         <Box width="fit-content">
           <Typography variant="subtitle2" width="fit-content">
-            Username
+            Email
           </Typography>
           <TextField
             size="small"
-            {...register("username")}
+            {...register("email")}
             variant="outlined"
             sx={{ width: 400 }}
             // rows={3}
