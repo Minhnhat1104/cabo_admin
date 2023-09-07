@@ -33,7 +33,7 @@ const LocationAutocomplete = (props: LocationAutocomplete, ref: any) => {
 
   useEffect(() => {
     if (data) {
-      if (!_.isEqual(data, options)) {
+      if (!_.isEqual(data, options) && Array.isArray(data)) {
         setOptions(data);
       }
     } else {

@@ -1,16 +1,17 @@
 import { KEY_LOCAL_STORAGE_ACCESS_TOKEN } from "@base/config/constants";
 import axios, { InternalAxiosRequestConfig } from "axios";
 
-const baseUrl = "http://10.65.0.23:8084/";
-const baseTimeOut = 5000;
+const baseUrl = "http://tops-endless-imp.ngrok-free.app/";
+const baseTimeOut = 10000;
 
 const instance = axios.create({
   baseURL: baseUrl,
   timeout: baseTimeOut,
   headers: {
-    "X-Custom-Header": "foobar",
+    // "X-Custom-Header": "foobar",
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": baseUrl,
+    "Access-Control-Allow-Origin": "*",
+    "ngrok-skip-browser-warning": "6024",
     // "Access-Control-Request-Headers": "Content-Type, Authorization",
   },
 });
@@ -33,7 +34,7 @@ instance.interceptors.request.use(
   }
 );
 
-const baseFormUrl = "http://10.65.0.23:8086/";
+const baseFormUrl = "https://tops-endless-imp.ngrok-free.app/";
 export const axios8086 = axios.create({
   baseURL: baseFormUrl,
   timeout: baseTimeOut,
@@ -63,7 +64,7 @@ axios8086.interceptors.request.use(
   }
 );
 
-const baseListDrivesUrl = "http://10.65.0.23:8083/";
+const baseListDrivesUrl = "https://tops-endless-imp.ngrok-free.app/";
 export const axios8083 = axios.create({
   baseURL: baseListDrivesUrl,
   timeout: baseTimeOut,
